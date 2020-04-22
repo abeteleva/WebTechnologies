@@ -1,0 +1,44 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ajax</title>
+    <script src="jquery-3.4.1.js"></script>
+</head>
+<body>
+    <h1>Ajax</h2>
+
+    <input id="ajax" type="button" value="Обновить страницу"><br></br>
+    <p id="getpage">Получение содержимого страницы</p>
+
+<script>
+    $(document).ready(function(){
+        $("#ajax").click(
+            function () {
+                $("#getpage").load("https://inxaoc.github.io/example/ajax-1.html", "", "");
+            }
+        )
+    })
+    $.ajax({
+        url: "https://inxaoc.github.io/example/ajax.json"}).done((e) => {
+            let r = Object.assign({}, e);
+            console.log(r);
+            $("body").append(jsonList(r));
+        });
+    function jsonList(element) 
+    {
+        let ul = document.createElement('ul');
+            for (const param in element) {
+                let li = document.createElement('li');
+                if (typeof (element[param]) !== 'object') {
+                    li.innerText = element[param];
+                } else {
+                    li.innerText = param;
+                    li.append(jsonList(element[param]));
+                }
+                ul.append(li);
+            }
+        return ul;
+    }
+</script>
+</body>
+</html>
